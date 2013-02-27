@@ -1,0 +1,13 @@
+The tarball just unzipped contains the following:
+
+docdist7.py: a file very much like docdist6.py, but with vector_angle
+and inner_product left unimplemented.
+
+ps1.py: contains the old versions of vector_angle and
+inner_product. After modifying these, you should submit this file to
+the class website.
+
+test-ps1.py: has unittests that will test for the new correct answers.
+
+t1.verne.txt, t2.bobsey.txt, t8.shakespeare.txt, t9.bacon.txt: data
+files containing text used in the unit tests.
