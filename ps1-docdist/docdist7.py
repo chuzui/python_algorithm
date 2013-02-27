@@ -180,7 +180,7 @@ def word_frequencies_for_file(filename):
     word_list = get_words_from_line_list(line_list)
     freq_mapping = count_frequency(word_list)
     freq_mapping = merge_sort(freq_mapping)
-
+    #freq_mapping.sort();
     print "File",filename,":",
     print len(line_list),"lines,",
     print len(word_list),"words,",
@@ -198,17 +198,19 @@ def calculate_angle_from_files(filename_1, filename_2):
     return distance
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) == 3:
         print "Usage: docdist7.py filename_1 filename_2"
     else:
-        filename_1 = sys.argv[1]
-        filename_2 = sys.argv[2]
+        #sys.argv[1] = "t9.bacon.txt"
+        #sys.argv[2] = "t8.shakespeare.txt"
+        filename_1 = "t9.bacon.txt"
+        filename_2 = "t8.shakespeare.txt"
         distance = calculate_angle_from_files(filename_1, filename_2)
         print "The distance between the documents is: %0.6f (radians)"%distance
 
 if __name__ == "__main__":
     import profile
-    profile.run("main()")
+    profile.run("main()", None, "cumulative")
 
     
     

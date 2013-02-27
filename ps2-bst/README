@@ -1,0 +1,11 @@
+This tarball contained the following:
+
+bst.py: basic BST implementation, including insert and find methods.
+
+bstsize.py: subclass of bst.py that augments the BST with the size of each node's subtree
+
+bstrank.py: adds a rank function to bstsize.py. This file is NOT needed for the problem set, but it may serve as a useful example.
+
+bstselect.py: Stub to be filled in and submitted online.
+
+test-bst.py: Run this unittest file to see if bstselect.py is correct.
