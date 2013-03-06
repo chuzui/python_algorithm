@@ -1,0 +1,11 @@
+This tarball contained the following:
+
+substring1.py: very slow implementation of longest_substring
+
+substring2.py: somewhat faster implementation of longest_substring
+
+data/: directory containing strings useful for testing purposes. Files
+are suffixed with the length of their strings.
+
+test-substring.py: Unit tests, including some tests commented out
+because they are large. To test a different file, edit the top line.
