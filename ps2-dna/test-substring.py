@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import substring2 as substring # modify this line to test a different file
+import substring3 as substring # modify this line to test a different file
 import unittest
 import time
 
@@ -29,11 +29,11 @@ class TestSubstring(unittest.TestCase):
     def testDNA1000(self):
         self.dna_test(1000, 66)
 
-#     def testDNA10000(self):
-#         self.dna_test(10000, 393)
+    def testDNA10000(self):
+        self.dna_test(10000, 393)
 
-#     def testDNA100000(self):
-#         self.dna_test(100000, 836)
+    def testDNA100000(self):
+        self.dna_test(100000, 836)
 
     def dna_test(self, suffix, solution_length):
         """
