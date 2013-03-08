@@ -1,6 +1,6 @@
 import math
 
-def inner_product(L1,L2,domain):
+def inner_product(L1, L2, domain):
     """
     Inner product between two vectors, where vectors
     are represented as alphabetically sorted (word,freq) pairs.
@@ -11,7 +11,7 @@ def inner_product(L1,L2,domain):
     sum = 0.0
     i = 0
     j = 0
-    while i<len(L1) and j<len(L2):
+    while i < len(L1) and j < len(L2):
         # L1[i:] and L2[j:] yet to be processed
         if L1[i][0] == L2[j][0]:
             # both vectors have this word
@@ -27,15 +27,16 @@ def inner_product(L1,L2,domain):
             j += 1
     return sum
 
-def vector_angle(L1,L2):
+
+def vector_angle(L1, L2):
     """
     The input is a list of (word,freq) pairs, sorted alphabetically.
     Return the angle between these two vectors.
     """
-    word1 = map(lambda i:i[0], L1)
-    word2 = map(lambda i:i[0], L2)
+    word1 = map(lambda i: i[0], L1)
+    word2 = map(lambda i: i[0], L2)
     domain = set(word1);
     domain = domain & set(word2)
-    numerator = inner_product(L1,L2,domain)
-    denominator = math.sqrt(inner_product(L1,L1,domain)*inner_product(L2,L2,domain))
-    return math.acos(numerator/denominator)
+    numerator = inner_product(L1, L2, domain)
+    denominator = math.sqrt(inner_product(L1, L1, domain) * inner_product(L2, L2, domain))
+    return math.acos(numerator / denominator)
