@@ -1,3 +1,5 @@
+from RollingHash import RollingHash
+
 def longest_substring(s, t):
     """Finds the longest substring that occurs in both s and t"""
     best = ''
@@ -16,18 +18,37 @@ def longest_substring(s, t):
 def k_substring(s, t, k):
     """Finds a substring of length k in both s and t if there is one,
     and returns it. Otherwise, returns None."""
-    print k
-    s_substrings = set()
-    # Put all substrings of s of length k into a set: s_substrings
-    for s_start in range(len(s)-k+1):
-        current = s[s_start : s_start+k]
-        s_substrings.add(current)
-        # For every substring of t of length k, look for it in
-    # s_substrings. If it's there, return it.
-    for t_start in range(len(t)-k+1):
-        current = t[t_start : t_start+k]
-        if current in s_substrings:
-            return current
+    roll_hs =  RollingHash(256, 9940613)
+    roll_ht = RollingHash(256, 9940613)
+    hs = {}
+    for i in range(k):
+        roll_hs.append(ord(s[i]))
+        roll_ht.append(ord(t[i]))
+
+    hs[roll_hs.get_value()] = [0];
+    for i in range(1, (len(s) - k + 1)):
+        roll_hs.append(ord(s[i + k - 1]))
+        roll_hs.skip()
+        if roll_hs.get_value() in hs:
+            hs[roll_hs.get_value()].append(i)
+        else:
+            hs[roll_hs.get_value()] = [i];
+
+
+
+    if roll_ht.get_value() in hs:
+        for i in hs[roll_ht.get_value()]:
+            if t[0:k] == s[i: i+k]:
+                return t[0:k]
+
+    for i in range(1, (len(t) - k + 1)):
+        roll_ht.append(ord(t[i + k - 1]))
+        roll_ht.skip()
+        if roll_ht.get_value() in hs:
+            for j in hs[roll_ht.get_value()]:
+                if t[i:i+k] == s[j: j+k]:
+                    return t[i:i+k]
+
     return None
 
-print longest_substring("a"*8, "a"*8)
+print longest_substring("a"*16, "a"*8)

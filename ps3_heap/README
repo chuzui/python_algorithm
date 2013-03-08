@@ -1,0 +1,7 @@
+This tarball contained the following:
+
+heap.py: basic min heap implementation.
+
+heap_delete.py: Stub to be filled in and submitted online.
+
+test_heap_delete.py: Run this unittest file to help determine if heap_delete.py is correct.

@@ -1,0 +1,7 @@
+This tarball contained the following:
+
+gas.py: simulation of bouncing balls with slow detect_collisions function. Requires either pygame or tkinter for the full graphical interface.
+
+detection.py: To be rewritten and submitted online. To test detection.py, uncomment import statement below detect_collisions in gas.py, and then run gas.py.
+
+test_detection.py: runs unittests to help debug code.
