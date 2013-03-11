@@ -784,7 +784,7 @@ def detect_collisions(balls):
 
 # Uncomment the line below to override detect_collisions with your version.
 ########################################
-#from detection import detect_collisions
+from detection import detect_collisions
 ########################################
 
 def colliding(b1, b2):
