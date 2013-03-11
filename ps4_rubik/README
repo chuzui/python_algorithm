@@ -1,0 +1,18 @@
+This zip contains the following:
+
+rubik.py: Library with Rubik's cube abstraction.
+
+count_repetitive_twists.py: Example code that uses the rubik.py library.
+
+level.py: To be filled in and submitted online. Counts how many
+positions are at a given level.
+
+test_level.py: unittests for level.py
+
+solver.py: To be filled in and submitted online. Finds the shortest
+path between to positions.
+
+test_solver.py; unittests for solver.py
+
+test_human_solver.py: Run this code after solver.py works, to test
+your code on a real life rubik's cube!
