@@ -88,27 +88,27 @@ class TestDetection(unittest.TestCase):
       answer = self.timed_auto_simulate("(20, 80)", 20, 80)
       self.assertEqual(answer, 95)
 
-  # def test_3_medium(self):
-  #     "Medium test: 200 balls"
-  #     answer = self.timed_auto_simulate("(200, 20)", 200, 20)
-  #     self.assertEqual(answer, 325)
-  #     answer = self.timed_auto_simulate("(200, 50)", 200, 50)
-  #     self.assertEqual(answer, 571)
-  #     answer = self.timed_auto_simulate("(200, 70)", 200, 70)
-  #     self.assertEqual(answer, 741)
-  #     answer = self.timed_auto_simulate("(200, 80)", 200, 80)
-  #     self.assertEqual(answer, 846)
+  def test_3_medium(self):
+       "Medium test: 200 balls"
+       answer = self.timed_auto_simulate("(200, 20)", 200, 20)
+       self.assertEqual(answer, 325)
+       answer = self.timed_auto_simulate("(200, 50)", 200, 50)
+       self.assertEqual(answer, 571)
+       answer = self.timed_auto_simulate("(200, 70)", 200, 70)
+       self.assertEqual(answer, 741)
+       answer = self.timed_auto_simulate("(200, 80)", 200, 80)
+       self.assertEqual(answer, 846)
 
-  # def test_4_large(self):
-  #     "Large test: 2000 balls"
-  #     answer = self.timed_auto_simulate("(2000, 20)", 2000, 20)
-  #     self.assertEqual(answer, 3277)
-  #     answer = self.timed_auto_simulate("(2000, 50)", 2000, 50)
-  #     self.assertEqual(answer, 5880)
-  #     answer = self.timed_auto_simulate("(2000, 70)", 2000, 70)
-  #     self.assertEqual(answer, 7612)
-  #     answer = self.timed_auto_simulate("(2000, 80)", 2000, 80)
-  #     self.assertEqual(answer, 8480)
+  def test_4_large(self):
+       "Large test: 2000 balls"
+       answer = self.timed_auto_simulate("(2000, 20)", 2000, 20)
+       self.assertEqual(answer, 3277)
+       answer = self.timed_auto_simulate("(2000, 50)", 2000, 50)
+       self.assertEqual(answer, 5880)
+       answer = self.timed_auto_simulate("(2000, 70)", 2000, 70)
+       self.assertEqual(answer, 7612)
+       answer = self.timed_auto_simulate("(2000, 80)", 2000, 80)
+       self.assertEqual(answer, 8480)
     
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(TestDetection)

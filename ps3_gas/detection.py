@@ -11,6 +11,14 @@ def detect_collisions(balls):
     world_max_y = +200.0*n_balls**.5  # maximum y in world coordinates
     set_of_collisions = set()
 
+    set_of_collisions_2 = set()
+
+#    for i in range(len(balls)):
+#        b1 = balls[i]
+#        for j in range(i):
+#            b2 = balls[j]
+#            if gas.colliding(b1, b2):
+#                set_of_collisions_2.add(gas.ball_pair(b1, b2))
 
     cloumn_num = int(math.ceil(400 * n_balls**.5 / 256))
     squared_list = [[] for x in range(cloumn_num) for y in range(cloumn_num)]
@@ -35,6 +43,16 @@ def detect_collisions(balls):
         #     list_collisions(squared_list[i], squared_list[i - 1],set_of_collisions)
         if i % cloumn_num < cloumn_num - 1:
             list_collisions(squared_list[i], squared_list[i + 1],set_of_collisions)
+
+        if i < total_num - cloumn_num and  i % cloumn_num > 0:
+            list_collisions(squared_list[i], squared_list[i + cloumn_num - 1],set_of_collisions)
+
+        if i < total_num - cloumn_num and i % cloumn_num < cloumn_num - 1:
+            list_collisions(squared_list[i], squared_list[i + cloumn_num + 1],set_of_collisions)
+
+
+        #print "set_of_collisions_2 ", len(set_of_collisions_2)
+        #print "set_of_collisions ", len(set_of_collisions)
     return set_of_collisions
 
 def list_collisions(l1, l2, set_of_collisions):
@@ -63,3 +81,4 @@ def list_collisions(l1, l2, set_of_collisions):
 #     return set_of_collisions
 
 import gas
+
