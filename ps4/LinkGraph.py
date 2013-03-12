@@ -1,3 +1,5 @@
+from enum import Color
+from Queue import Queue
 NUM_LENGTH = 4
 class LinkGraph:
     def __init__(self,v,isDirected):
@@ -23,6 +25,27 @@ class LinkGraph:
         while node.getNext():
             node = node.getNext()
         node.setNext(Node(v))
+
+    def BFS(self, index):
+        n = self._v
+        matrix = self._matrix
+        color = [Color.WHITE for i in range(n)]
+        #d = [None for i in range(n)]
+        queue = Queue();
+        color[index] = Color.GRAY
+        queue.put(index)
+        while queue.qsize() > 0:
+            cur_index = queue.get()
+            print cur_index
+            for node in matrix[cur_index].next():
+                if color[node.getIndex()] == Color.WHITE:
+                    queue.put(node.getIndex())
+                    color[node.getIndex()] = Color.GRAY
+# for column_num,i in enumerate(self._matrix[cur_index]):
+            #     if i == 1 and color[column_num] == Color.WHITE:
+            #         queue.put(column_num)
+            #         color[column_num] = Color.GRAY
+            color[node.getIndex()] = Color.BLACK
 
 class Node:
     def __init__(self,index):
@@ -51,10 +74,15 @@ class Node:
     def getNext(self):
         return self._next
 
-ma = LinkGraph(12, True)
+ma = LinkGraph(5, False)
 
-ma.addEdge(3,5)
-ma.addEdge(6,7)
+ma.addEdge(0,1)
+ma.addEdge(0,4)
+ma.addEdge(1,2)
+ma.addEdge(1,3)
+ma.addEdge(1,4)
+ma.addEdge(2,3)
+ma.addEdge(3,4)
+ma.BFS(0)
 #ma.transpose()
-print ma
 print ma

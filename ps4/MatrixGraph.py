@@ -1,8 +1,11 @@
+from enum import Color
+from Queue import Queue
 NUM_LENGTH = 4
 class MatrixGraph:
     def __init__(self, v, isDirectred):
         self._v = v
         self._matrix = [[0 for x in range(v)] for y in range(v)]
+
         self._isDirectred = isDirectred
 
     def __str__(self):
@@ -24,11 +27,36 @@ class MatrixGraph:
                 matrix[i][j] = matrix[j][i]
                 matrix[j][i] = tmp
 
-ma = MatrixGraph(12, True)
+    def BFS(self, index):
+        n = self._v
+        color = [Color.WHITE for i in range(n)]
+        #d = [None for i in range(n)]
+        queue = Queue();
+        color[index] = Color.GRAY
+        queue.put(index)
+        while queue.qsize() > 0:
+            cur_index = queue.get()
+            print cur_index
+            for column_num,i in enumerate(self._matrix[cur_index]):
+                if i == 1 and color[column_num] == Color.WHITE:
+                    queue.put(column_num)
+                    color[column_num] = Color.GRAY
+            color[cur_index] = Color.BLACK
 
-ma.addEdge(3,5)
-ma.addEdge(6,7)
-ma.transpose()
+
+
+
+ma = MatrixGraph(5, False)
+
+ma.addEdge(0,1)
+ma.addEdge(0,4)
+ma.addEdge(1,2)
+ma.addEdge(1,3)
+ma.addEdge(1,4)
+ma.addEdge(2,3)
+ma.addEdge(3,4)
+ma.BFS(0)
+#ma.transpose()
 print ma
 
 
