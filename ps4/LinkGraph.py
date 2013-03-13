@@ -80,7 +80,7 @@ ma.addEdge(0,1)
 ma.addEdge(0,4)
 ma.addEdge(1,2)
 ma.addEdge(1,3)
-ma.addEdge(1,4)
+ma.addEdge(1,4)s
 ma.addEdge(2,3)
 ma.addEdge(3,4)
 ma.BFS(0)
