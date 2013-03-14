@@ -32,11 +32,11 @@ class TestSubstring(unittest.TestCase):
     # def testDNA10000(self):
     #     self.dna_test(10000, 393)
     #
-    # def testDNA100000(self):
-    #     self.dna_test(100000, 836)
+    def testDNA100000(self):
+        self.dna_test(100000, 836)
 
-    def testDNA1000000(self):
-        self.dna_test(1000000, 836)
+    # def testDNA1000000(self):
+    #     self.dna_test(1000000, 836)
 
     def dna_test(self, suffix, solution_length):
         """
@@ -46,7 +46,7 @@ class TestSubstring(unittest.TestCase):
         solution.
         """
         s_file = open('data/chr2_first_' + str(suffix))
-        t_file = open('data/chr2b_first_' + str(suffix))
+        t_file = open('data/chr2a_first_' + str(suffix))
         s = s_file.readline()
         t = t_file.readline()
 

@@ -29,10 +29,11 @@ def k_substring(s, t, k):
     for i in range(1, (len(s) - k + 1)):
         roll_hs.append(ord(s[i + k - 1]))
         roll_hs.skip()
-        if roll_hs.get_value() in hs:
-            hs[roll_hs.get_value()].append(i)
-        else:
-            hs[roll_hs.get_value()] = [i];
+        hs.setdefault(roll_hs.get_value(), []).append(i)
+        # if roll_hs.get_value() in hs:
+        #     hs[roll_hs.get_value()].append(i)
+        # else:
+        #     hs[roll_hs.get_value()] = [i];
 
 
 
