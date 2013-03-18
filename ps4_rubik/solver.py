@@ -46,5 +46,4 @@ def shortest_path(start, end):
 
 
 
-
-
+l1 = [1,2,3]
