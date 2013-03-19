@@ -1,0 +1,13 @@
+This zip contains the following:
+
+ResizeableImage.py: To be filled in and submitted online.
+
+ImageMatrix.py: Provides various library functions, including
+switching between PIL Image and a more accessible format. Also
+provides energy function.
+
+test_image.py: unittests for ResizeableImage.py
+
+gui.py: Graphical interface to ResizeableImage.py
+
+sunset_small.png and sunset_full.png: data used in test_image.py.

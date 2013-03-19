@@ -7,10 +7,12 @@ class Node:
 
 def make_change(denominations, C):
     l = [None for i in range(C + 1)]
+    if C == 0:
+        return []
     l[0] = Node(0,0,None)
     l[1] = Node(1,1,None)
     for i in range (2, C+1):
-        max_size = C
+        max_size = C + 1
         for coin in denominations:
             if i - coin > 0:
                 if l[i-coin]._size + 1 < max_size:
@@ -32,4 +34,4 @@ def make_change(denominations, C):
 
 
 
-print make_change([1, 5, 10, 17], 4)
+#print make_change([1, 5, 10, 17], 4)
