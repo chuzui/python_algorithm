@@ -35,14 +35,14 @@ def evaluate(dev_file, tag_count, tag_word_count):
                     max_tag = tag
 
         write_lines.append(word + ' ' + max_tag + '\n')
-    f = open('gene_test.p1.out', 'w')
+    f = open('gene_dev.p1.out', 'w')
     f.writelines(write_lines)
 
 
 
 if __name__ == "__main__":
     try:
-        dev_file = file('gene.test',"r")
+        dev_file = file('gene.dev',"r")
         count_file = file('gene.counts',"r")
     except IOError:
         sys.stderr.write("ERROR: Cannot read inputfile.\n")

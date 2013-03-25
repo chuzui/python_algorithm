@@ -19,6 +19,7 @@ def replace_infrequent_word(original_file, less_list):
     for line in original_file:
         list = line.split()
         if len(list) == 0:
+            write_list.append(line)
             continue
         if list[0] in less_list:
             #write_list.append(list[0] + '\b_RARE_\n')
