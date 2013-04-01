@@ -1,5 +1,5 @@
 from __future__ import division
-import nltk, re, pprint
+import nltk, stem, pprint
 
 import urllib2
 #import urllib

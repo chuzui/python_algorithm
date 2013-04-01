@@ -4,7 +4,7 @@ import unittest
 import cStringIO
 import sys
 import time
-import re
+import stem
 import os
 
 class TestDetection(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestDetection(unittest.TestCase):
       source_lines = source.readlines()
       patched_source = open('patcheddetection.py', 'w')
       for line in source_lines:
-          if (re.compile("^[^#]*import.*\sgas\s").search(line) is None):
+          if (stem.compile("^[^#]*import.*\sgas\s").search(line) is None):
               patched_source.write(line)
           else:
               patched_source.write("import gas\ngas.detect_collisions = detect_collisions\n")
