@@ -68,8 +68,10 @@ if __name__ == "__main__":
     try:
         #count_file = open(sys.argv[1], 'r')
         #source_file = open(sys.argv[2], 'r')
-        count_file = open(sys.argv[1], 'r')
-        source_file = open(sys.argv[2], 'r')
+        #count_file = open(sys.argv[1], 'r')
+        #source_file = open(sys.argv[2], 'r')
+        count_file = open('parse_train.counts.out', 'r')
+        source_file = open('parse_dev.dat', 'r')
     except IOError:
         sys.stderr.write("error")
 

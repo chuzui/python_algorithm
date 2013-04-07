@@ -12,7 +12,11 @@ def make_change(denominations, C):
     l[0] = Node(0,0,None)
     l[1] = Node(1,1,None)
     for i in range (2, C+1):
+<<<<<<< HEAD
         max_size = C + 1
+=======
+        max_size = C+1
+>>>>>>> ss3
         for coin in denominations:
             if i - coin > 0:
                 if l[i-coin]._size + 1 < max_size:
