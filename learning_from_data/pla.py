@@ -13,7 +13,7 @@ for i in range(1000):
     a = (random.uniform(-1,1), random.uniform(-1,1))
     b = (random.uniform(-1,1), random.uniform(-1,1))
     points = []
-    for j in range(10):
+    for j in range(100):
         point = (random.uniform(-1,1), random.uniform(-1,1))
         re = (point[0] - a[0]) * ((a[1] - b[1]) / (a[0] - b[0])) + a[1]
         if point[1] > re:
@@ -25,7 +25,7 @@ for i in range(1000):
     while True:
         count += 1
         misPoints = []
-        for j in range(10):
+        for j in range(100):
             sum = innerproduct(points[j][:-1], w)
             if sum > 0:
                 if points[j][-1] == -1:
@@ -47,7 +47,7 @@ for i in range(1000):
         if point[1] > re:
             point.append(1)
         else:
-            points.append(-1)
+            point.append(-1)
         sum = innerproduct(w, point[:-1])
         if sum > 0:
             if point[-1] == -1:
@@ -56,5 +56,5 @@ for i in range(1000):
             if point[-1] == 1:
                 cc += 1
 
-print cc / 10000 * 1000
+print cc / (10000 * 1000)
 print count
