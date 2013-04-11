@@ -33,11 +33,14 @@ B.val = zeros(1, prod(B.card));
 % so make sure you understand what these lines are doing
 assignments = IndexToAssignment(1:length(A.val), A.card);
 indxB = AssignmentToIndex(assignments(:, mapB), B.card);
-
+assignments 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
 % Correctly populate the factor values of B
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+%for i = 1:length(A.val)
+%	B.val(indxB(i)) += A.val(i)
+%end   
+B.val = full(sparse(indxB, 1, A.val))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
