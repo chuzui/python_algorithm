@@ -28,7 +28,9 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 M = ComputeJointDistribution(F)
 M = ObserveEvidence(M, E)
-M = FactorMarginalization(M, E(:,1)')
+if length(E) > 0
+M = FactorMarginalization(M, E(:,1))
+end
 M.val = M.val / sum(M.val)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
