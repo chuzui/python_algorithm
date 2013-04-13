@@ -42,6 +42,6 @@ indxB = AssignmentToIndex(assignments(:, mapB), B.card);
 %	B.val(indxB(i)) += A.val(i)
 %end   
 
-B.val = full(sparse(indxB, 1, A.val))'
+B.val = full(sparse(indxB, 1, A.val))';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

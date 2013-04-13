@@ -26,12 +26,14 @@ end
 % M should be a factor
 % Remember to renormalize the entries of M!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-M = ComputeJointDistribution(F)
-M = ObserveEvidence(M, E)
-if length(E) > 0
-M = FactorMarginalization(M, E(:,1))
+M = ComputeJointDistribution(F);
+M = ObserveEvidence(M, E);
+[varB, mapB] = setdiff(M.var, V);
+
+if length(varB) > 0
+M = FactorMarginalization(M, varB);
 end
-M.val = M.val / sum(M.val)
+M.val = M.val / sum(M.val);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
