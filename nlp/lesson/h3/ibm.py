@@ -176,6 +176,9 @@ if __name__ == '__main__':
     t = ibm1(corpusEsList, corpusEnList)
     t,q = ibm2(corpusEsList, corpusEnList, t)
 
+    rv_t = ibm1(corpusEnList, corpusEsList)
+    rv_t, q = ibm2(corpusEnList, corpusEsList, rv_t)
+
     devEs = readFile('test.es')
     devEn = readFile('test.en')
     trans_IBM2(devEs, devEn, t, q)
