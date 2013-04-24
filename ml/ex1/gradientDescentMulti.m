@@ -19,7 +19,10 @@ for iter = 1:num_iters
 
 
 
-
+    ole_theta = theta;
+    for j = 1:length(theta)
+        theta(j) = ole_theta(j) - alpha * (1/m) * sum((X * ole_theta - y) .* X(:, j));
+    end     
 
 
 
