@@ -44,7 +44,8 @@ for i = 1:size(E, 1),
 
 	     ignoreAss = assignments(~(assignments(:,indx)==x),:);
 
-	     F(j) = SetValueOfAssignment(F(j), ignoreAss, 0)
+	     F(j) = SetValueOfAssignment(F(j), ignoreAss, 0);
+
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
