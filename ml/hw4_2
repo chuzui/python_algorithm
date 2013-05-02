@@ -1,0 +1,22 @@
+from __future__ import division
+import scipy
+    import scipy.misc
+import scipy.optimize
+from decimal import Decimal
+
+N = 5
+gamma = 0.05
+
+def fom(n, v):
+    sum = 0
+    for i in range(min(n+1,v+1)):
+        sum += scipy.misc.comb(n,i,exact=True)
+    return sum
+
+def count(x):
+    return (1 / (2 * N) * (4 * x * (1+x) + float((4 * fom(N**2, 50) / Decimal(0.05)).ln()))) **  0.5 - x;
+#print count(0)
+#print str(fom(N**2, 50))
+print scipy.optimize.fsolve(count,1)
+
+

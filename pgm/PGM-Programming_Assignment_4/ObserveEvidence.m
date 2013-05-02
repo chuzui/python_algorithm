@@ -7,6 +7,8 @@
 %     .val    Value table of size prod(.card)
 %   E is an N-by-2 matrix, where each row consists of a variable/value pair. 
 %     Variables are in the first column and values are in the second column.
+%
+% Copyright (C) Daphne Koller, Stanford University, 2012
 
 function F = ObserveEvidence(F, E)
 
@@ -39,14 +41,13 @@ for i = 1:size(E, 1),
             % Hint: You might find it helpful to use IndexToAssignment
             %       and SetValueOfAssignment
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-            assignments = IndexToAssignment(1:length(F(j).val), F(j).card);
-
-	     ignoreAss = assignments(~(assignments(:,indx)==x),:);
-
-	     F(j) = SetValueOfAssignment(F(j), ignoreAss, 0);
-
-
+            for k = 1:length(F(j).val),
+                % get assignment for this index
+                A = IndexToAssignment(k, F(j).card);
+                if (A(indx) ~= x),
+                    F(j).val(k) = 0;
+                end;
+            end;
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 				% Check validity of evidence / resulting factor
