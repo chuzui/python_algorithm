@@ -39,7 +39,39 @@ P.edges = zeros(N);
 % Print out C to get a better understanding of its structure.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+M = length(C.factorList);
 
+V = unique([C.factorList(:).var]);
+card = zeros(1, length(V));
+for i = 1 : length(V),
+	 for j = 1 : length(C.factorList)
+		  if (~isempty(find(C.factorList(j).var == i)))
+				card(i) = C.factorList(j).card(find(C.factorList(j).var == i));
+				break;
+		  end
+	 end
+end
+
+for i = 1:N
+    P.cliqueList(i).var = C.nodes{i};
+    P.cliqueList(i).card = card(P.cliqueList(i).var);
+    P.cliqueList(i).val = ones(1, prod(P.cliqueList(i).card));
+end
+for i = 1:N
+    F = struct('var', [], 'card', [], 'val', []);
+    j = 1;
+    while j <= length(C.factorList)
+        if all(ismember(C.factorList(j).var, P.cliqueList(i).var))
+            F = FactorProduct(F, C.factorList(j));
+            C.factorList(j) = [];
+            j = j-1;
+        end
+        j = j+1;
+    end
+    P.cliqueList(i) = FactorProduct(P.cliqueList(i), F);
+    %P.cliqueList(i) = StandardizeFactors(F);
+end
+P.edges = C.edges;
 
 end
 

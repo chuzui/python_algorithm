@@ -20,6 +20,9 @@ function A = MaxDecoding( M )
 % initialization
 % you should set it to the correct value in your code
 A = [];
+for i = 1:length(M)
+    [m A(i)] = max(M(i).val);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE

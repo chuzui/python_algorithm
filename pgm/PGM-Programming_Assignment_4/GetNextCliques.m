@@ -29,6 +29,30 @@ function [i, j] = GetNextCliques(P, messages)
 % you should set them to the correct values in your code
 i = 0;
 j = 0;
+N = length(messages);
+
+for k = 1:N
+    out = [];
+    in = [];
+    for m = 1:N
+        if P.edges(k, m) == 1
+            if isempty(messages(k,m).var)
+                out = [out, m];
+            end
+            
+            if ~isempty(messages(m,k).var)
+                in = [in, m];
+            end
+        end
+    end
+    for m = 1:length(out)
+        if length(setdiff(in, out(m))) == sum(P.edges(k, :)) - 1
+            i = k;
+            j = out(m);
+            return
+        end
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
