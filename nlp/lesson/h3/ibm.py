@@ -1,6 +1,6 @@
 from __future__ import division
 import sys
-
+import pickle
 def readFile(path):
     l = []
     try:
@@ -51,6 +51,8 @@ def initQ(srcList, desList):
         l = len(desList[k])
         m = len(srcList[k])
         rate = 1 / (l + 1)
+        if l == 0:
+            continue
         for i in range(1, m+1):
             for j in range(l+1):
                 q.setdefault(j, {})[i,l,m] = rate
@@ -77,6 +79,8 @@ def ibm1(srcList, desList):
         initC(c)
         for k in range(n):
             for i, srcWord in enumerate(srcList[k]):
+                if len(desList[k]) == 0:
+                    continue
                 s = 0
                 for j, desWord in enumerate(desList[k]):
                     s += t[srcWord].get(desWord, 0)
@@ -105,6 +109,8 @@ def ibm2(srcList, desList, t):
             l = len(desList[k])
             m = len(srcList[k])
             for i, srcWord in enumerate(srcList[k]):
+                if len(desList[k]) == 0:
+                    continue
                 s = 0
                 for j, desWord in enumerate(desList[k]):
                     s += q[j+1].get((i+1,l,m), 0) * t[srcWord].get(desWord, 0)
@@ -174,13 +180,17 @@ if __name__ == '__main__':
     corpusEsList = readFile('corpus.es')
     corpusEnList = readFile('corpus.en')
     t = ibm1(corpusEsList, corpusEnList)
-    t,q = ibm2(corpusEsList, corpusEnList, t)
+    t, q = ibm2(corpusEsList, corpusEnList, t)
 
     rv_t = ibm1(corpusEnList, corpusEsList)
     rv_t, rv_q = ibm2(corpusEnList, corpusEsList, rv_t)
 
-    devEs = readFile('test.es')
-    devEn = readFile('test.en')
-    trans_IBM2(devEs, devEn, t, q)
+    l = [t, q, rv_t, rv_q]
+    f = open("data", 'w')
+    pickle.dump(l, f)
+
+    #devEs = readFile('test.es')
+    #devEn = readFile('test.en')
+    #trans_IBM2(devEs, devEn, t, q)
 
 
