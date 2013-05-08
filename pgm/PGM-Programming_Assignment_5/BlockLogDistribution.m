@@ -53,11 +53,123 @@ LogBS = zeros(1, d);
 %
 % Also you should have only ONE for-loop, as for-loops are VERY slow in matlab
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+f = struct('var', [], 'card', [], 'val', []);
+E = [];
+for i = 1:length(A)
+    E = [E; i, A(i)];
+end
+for i = cell2mat(G.var2factors(V(1)))
+    temp_factor = F(i);
+    temp_factor.val = log(temp_factor.val);
+    f = FactorSum(f, temp_factor);
+end
+f.val = f.val - min(f.val);
+f = ObserveEvidence(f,E);
+f = FactorMarginalization(f, setdiff(f.var, V));
+%f = ObserveEvidence(f, E);
+LogBS = f.val;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Re-normalize to prevent underflow when you move back to probability space
-LogBS = LogBS - min(LogBS);
+%LogBS = LogBS - min(LogBS);
+end
 
 
+function C = FactorSum(A, B)
+
+% Check for empty factors
+if (isempty(A.var)), C = B; return; end;
+if (isempty(B.var)), C = A; return; end;
+
+% Check that variables in both A and B have the same cardinality
+[dummy iA iB] = intersect(A.var, B.var);
+if ~isempty(dummy)
+	% A and B have at least 1 variable in common
+	assert(all(A.card(iA) == B.card(iB)), 'Dimensionality mismatch in factors');
+end
+
+% Set the variables of C
+C.var = union(A.var, B.var);
+
+% Construct the mapping between variables in A and B and variables in C.
+% In the code below, we have that
+%
+%   mapA(i) = j, if and only if, A.var(i) == C.var(j)
+% 
+% and similarly 
+%
+%   mapB(i) = j, if and only if, B.var(i) == C.var(j)
+%
+% For example, if A.var = [3 1 4], B.var = [4 5], and C.var = [1 3 4 5],
+% then, mapA = [2 1 3] and mapB = [3 4]; mapA(1) = 2 because A.var(1) = 3
+% and C.var(2) = 3, so A.var(1) == C.var(2).
+
+[dummy, mapA] = ismember(A.var, C.var);
+[dummy, mapB] = ismember(B.var, C.var);
+
+% Set the cardinality of variables in C
+C.card = zeros(1, length(C.var));
+C.card(mapA) = A.card;
+C.card(mapB) = B.card;
+
+% Initialize the factor values of C:
+%   prod(C.card) is the number of entries in C
+C.val = log(zeros(1,prod(C.card)));
+
+% Compute some helper indices
+% These will be very useful for calculating C.val
+% so make sure you understand what these lines are doing.
+assignments = IndexToAssignment(1:prod(C.card), C.card);
+indxA = AssignmentToIndex(assignments(:, mapA), A.card);
+indxB = AssignmentToIndex(assignments(:, mapB), B.card);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% YOUR CODE HERE:
+% Correctly populate the factor values of C
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+C.val = A.val(indxA) + B.val(indxB);
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+end
+
+function B = FactorMarginalization(A, V)
+
+% Check for empty factor or variable list
+if (isempty(A.var) || isempty(V)), B = A; return; end;
+
+% Construct the output factor over A.var \ V (the variables in A.var that are not in V)
+% and mapping between variables in A and B
+[B.var, mapB] = setdiff(A.var, V);
+
+% Check for empty resultant factor
+if isempty(B.var)
+  %error('Error: Resultant factor has empty scope');
+  B.var = [];
+  B.card = [];
+  B.val = [];
+  return;
+end;
+
+% Initialize B.card and B.val
+B.card = A.card(mapB);
+B.val = zeros(1,prod(B.card));
+
+% Compute some helper indices
+% These will be very useful for calculating C.val
+% so make sure you understand what these lines are doing
+assignments = IndexToAssignment(1:length(A.val), A.card);
+indxB = AssignmentToIndex(assignments(:, mapB), B.card);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% YOUR CODE HERE
+% Correctly populate the factor values of B
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    for i = 1:length(A.val),
+        B.val(indxB(i)) = B.val(indxB(i)) + A.val(i);
+    end;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end
 
