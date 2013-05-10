@@ -9,7 +9,6 @@
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
 function A = GibbsTrans(A, G, F)
-B = ones(1,length(G.names));
 for i = 1:length(G.names)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % YOUR CODE HERE
@@ -25,9 +24,7 @@ for i = 1:length(G.names)
 
     LogBS = BlockLogDistribution(i, G, F, A);
     LogBS = exp(LogBS);
-    B(i) = randsample(G.card(i), 1, true, LogBS');
+    A(i) = randsample(G.card(i), 1, true, LogBS);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
-A
-A = B;
-A
+
