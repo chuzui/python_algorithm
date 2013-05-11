@@ -55,10 +55,20 @@ LogBS = zeros(1, d);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 f = struct('var', [], 'card', [], 'val', []);
 E = [];
+L = [];
+
 for i = 1:length(A)
-    E = [E; i, A(i)];
+    if length(intersect(i, V)) == 0
+        E = [E; i, A(i)];
+    end
 end
-for i = cell2mat(G.var2factors(V(1)))
+
+for i = V'
+    L = [L, cell2mat(G.var2factors(i))];   
+end
+L = unique(L);
+
+for i = L
     temp_factor = F(i);
     temp_factor.val = log(temp_factor.val);
     f = FactorSum(f, temp_factor);
@@ -67,11 +77,13 @@ f.val = f.val - min(f.val);
 f = ObserveEvidence(f,E);
 f = FactorMarginalization(f, setdiff(f.var, V));
 %f = ObserveEvidence(f, E);
-LogBS = f.val;
+num = length(V);
+assignments = repmat((1:d)', 1, num);
+LogBS = GetValueOfAssignment(f,assignments);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Re-normalize to prevent underflow when you move back to probability space
-%LogBS = LogBS - min(LogBS);
+LogBS = LogBS - min(LogBS);
 end
 
 
@@ -172,4 +184,3 @@ indxB = AssignmentToIndex(assignments(:, mapB), B.card);
     end;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
-
