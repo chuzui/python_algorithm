@@ -19,7 +19,16 @@ p_acceptance = 0.0;
 % YOUR CODE HERE
 % Compute acceptance probability
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+pi = 1;
+for i = 1:length(A)
+    pi = pi * (F(i).val(A_prop(i))) / (F(i).val(A(i)));
+end
 
+if pi > 1
+    p_acceptance = 1;
+else
+    p_acceptance = pi;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Accept or reject proposal

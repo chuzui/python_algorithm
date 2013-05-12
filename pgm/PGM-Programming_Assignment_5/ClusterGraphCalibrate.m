@@ -91,6 +91,8 @@ while (1),
       lastMESSAGES(i,j)=prevMessage;
     end
     
+    
+    
     % Check for convergence every m iterations
     if mod(iteration, length(edgeFromIndx)) == 0
         if (CheckConvergence(MESSAGES, lastMESSAGES))
