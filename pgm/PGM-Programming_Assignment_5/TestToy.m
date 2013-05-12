@@ -3,14 +3,14 @@
 rand('seed', 1);
 
 % Construct the toy network
-[toy_network, toy_factors] = ConstructToyNetwork(0.3, 1);
+[toy_network, toy_factors] = ConstructToyNetwork(1.0, 0.1);
 toy_evidence = zeros(1, length(toy_network.names));
 %toy_clique_tree = CreateCliqueTree(toy_factors, []);
 %toy_cluster_graph = CreateClusterGraph(toy_factors,[]);
 
 % Exact Inference
 ExactM = ComputeExactMarginalsBP(toy_factors, toy_evidence, 0)
-figure, VisualizeToyImageMarginals(toy_network, ExactM);
+figure, VisualizeToyImageMarginals(toy_network, ExactM, 0, 'exact');
 
 % Comment this in to run Approximate Inference on the toy network
 % Approximate Inference
@@ -28,10 +28,10 @@ for j = 1:length(transition_names)
     num_chains_to_run = 3;
     for i = 1:num_chains_to_run
         % Random Initialization
-        A0 = ceil(rand(1, length(toy_network.names)) .* toy_network.card);
+        %A0 = ceil(rand(1, length(toy_network.names)) .* toy_network.card);
 
         % Initialization to all ones
-        % A0 = i * ones(1, length(toy_network.names));
+         A0 = i * ones(1, length(toy_network.names));
 
         [M, all_samples] = ...
             MCMCInference(toy_network, toy_factors, toy_evidence, transition_names{j}, 0, 4000, 1, A0);
