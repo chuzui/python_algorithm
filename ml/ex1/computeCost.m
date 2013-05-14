@@ -14,7 +14,14 @@ J = 0;
 %               You should set J to the cost.
 
 
-J = sum((X * theta - y) .^2) / (2*m);
+%J = sum((X * theta - y) .^2) / (2*m);
+error = 0;
+for i=1:m
+    if sign(X(i, :) * theta) ~= sign(y(i))
+        error = error + 1;
+    end
+end
+J = error / m;
 
 % =========================================================================
 
