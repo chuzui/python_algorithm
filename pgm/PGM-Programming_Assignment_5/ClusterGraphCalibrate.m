@@ -58,6 +58,10 @@ tic;
 iteration = 0;
 
 lastMESSAGES = MESSAGES;
+iter = 0;
+a = [];
+b = [];
+c = [];
 
 while (1),
     iteration = iteration + 1;
@@ -91,7 +95,17 @@ while (1),
       lastMESSAGES(i,j)=prevMessage;
     end
     
+    %if i == 19 && j == 3
+     %   a = [a, MessageDelta(MESSAGES(i, j), prevMessage)];
+    %end
     
+    %if i == 15 && j == 40
+     %   b = [b, MessageDelta(MESSAGES(i, j), prevMessage)];
+    %end
+    
+   % if i == 17 && j == 2
+    %    c = [c, MessageDelta(MESSAGES(i, j), prevMessage)];
+   % end
     
     % Check for convergence every m iterations
     if mod(iteration, length(edgeFromIndx)) == 0
@@ -108,7 +122,9 @@ end;
 toc;
 disp(['Total number of messages passed: ', num2str(iteration)]);
 
-
+a
+b
+c
 % Compute final potentials and place them in P
 for m = 1:length(edgeFromIndx),
     j = edgeFromIndx(m);

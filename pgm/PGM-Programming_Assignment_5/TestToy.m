@@ -22,16 +22,16 @@ figure, VisualizeToyImageMarginals(toy_network, ExactM, 0, 'exact');
 % MCMC Inference
 transition_names = {'Gibbs', 'MHUniform', 'MHGibbs', 'MHSwendsenWang1', 'MHSwendsenWang2'};
 
-for j = 1:length(transition_names)
+for j = 1:1
     samples_list = {};
 
-    num_chains_to_run = 3;
+    num_chains_to_run = 1;
     for i = 1:num_chains_to_run
         % Random Initialization
         %A0 = ceil(rand(1, length(toy_network.names)) .* toy_network.card);
 
         % Initialization to all ones
-         A0 = i * ones(1, length(toy_network.names));
+         A0 = 2 * ones(1, length(toy_network.names));
 
         [M, all_samples] = ...
             MCMCInference(toy_network, toy_factors, toy_evidence, transition_names{j}, 0, 4000, 1, A0);
