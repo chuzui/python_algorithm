@@ -21,8 +21,14 @@ function EU = SimpleCalcExpectedUtility(I)
   % YOUR CODE HERE
   %
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  V = unique([F(:).var]);
+  newF = struct('var', [], 'card', [], 'val', []);
+  F = VariableElimination(F, setdiff(V,U.var));
+  for f = F
+      newF = FactorProduct(newF, f);
+  end
+  newF = FactorProduct(newF, U);
   
-  [newF E] = EliminateVar(F, [0 0; 0 0], []);
-  Eu = sum(newF.val);
+  EU = sum(newF.val);
   
 end

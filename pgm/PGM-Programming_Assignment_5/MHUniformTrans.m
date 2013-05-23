@@ -20,6 +20,7 @@ p_acceptance = 0.0;
 % Compute acceptance probability
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 pi = 1;
+A
 for i = 1:length(A)
     pi = pi * (F(i).val(A_prop(i))) / (F(i).val(A(i)));
 end
