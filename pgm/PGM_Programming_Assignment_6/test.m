@@ -1,4 +1,4 @@
-testNum = 1;
+testNum = 3;
 
 if (~exist('TS','var') || true)
   %% This is based on TestCases to make it all more testable.

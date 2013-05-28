@@ -17,7 +17,21 @@ function EUF = CalculateExpectedUtilityFactor( I )
   % YOUR CODE HERE...
   %
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
-
-
-  
+  %I.DecisionFactors(1).val(:) = 1;
+  F = [I.RandomFactors];
+  U = I.UtilityFactors(1);
+  F = [F, U];
+  V = unique([F(:).var]);
+  %newF = struct('var', [], 'card', [], 'val', []);
+  newF = VariableElimination(F, setdiff(V,I.DecisionFactors(1).var));
+ % for f = F
+ %     newF = FactorProduct(newF, f);
+ % end
+ % newF = FactorProduct(newF, U);
+ f = newF(1);
+ for i = 2:length(newF);
+     f = FactorProduct(f, newF(i));
+ end
+  %newF = FactorMarginalization(newF, setdiff(newF.var, I.DecisionFactors(1).var));
+  EUF = f;
 end  
