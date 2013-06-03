@@ -44,9 +44,8 @@ function [nll, grad] = InstanceNegLogLikelihood(X, y, theta, modelParams)
     % feel free to read through GenerateAllFeatures.m and the functions it calls!
     % For the purposes of this assignment, though, you don't
     % have to understand how this code works. (It's complicated.)
-    
     featureSet = GenerateAllFeatures(X, modelParams);
-
+    
     % Use the featureSet to calculate nll and grad.
     % This is the main part of the assignment, and it is very tricky - be careful!
     % You might want to code up your own numerical gradient checker to make sure
@@ -60,6 +59,57 @@ function [nll, grad] = InstanceNegLogLikelihood(X, y, theta, modelParams)
     grad = zeros(size(theta));
     %%%
     % Your code here:
+    [numCharacters numImageFeatures] = size(X);
+    N = size(theta);
+    factors = repmat(struct ('var', [], 'card', [], 'val', []), N);
+
+    for i = 1:length(featureSet.features)
+		index = featureSet.features(i).paramIdx;
+		if length(factors(index).var) != 0
+			v = GetValueOfAssignment(factors(index), featureSet.features(i).assignment) + theta(index);
+			factors(index) = SetValueOfAssignment(factors(index), featureSet.features(i).assignment, v);
+		else
+			factors(index).var = featureSet.features(i).var;
+			if length(factors(index).var) == 1
+				factors(index).card = [numCharacters];	
+			elseif length(factors(index).var) == 2
+				if any(featureSet.features(i).assignment > 26)
+					"> 26"
+				end
+				factors(index).card = [numCharacters numCharacters];
+			else		
+				factors(index).card = [numImageFeatures numCharacters 2];
+			end	
+			factors(index).val = zeros(1, prod(factors(index).card));
+			factors(index) = SetValueOfAssignment(factors(index), featureSet.features(i).assignment, theta(index));
+
+		end
+    end
+    for i = 1:length(factors)
+		factors(i).val = exp(factors(i).val);
+    end
+
+    P = CreateCliqueTree(factors);
+    [a logZ] = CliqueTreeCalibrate(P, false);
+    logZ
+    nll = logZ;
+    
+    weighted = 0;
+    for i = 1:length(featureSet.features)
+		weighted = weighted + theta(featureSet.features(i).paramIdx);
+    end
+    weighted
+    reg = (modelParams.lambda / 2) * sum(theta .^ 2)
+    
+    %index = 1;
+    %for i = 1:modelParams.numHiddenStates
+		%factors(i).var = featureSet.features(i).var;
+		%factors(i).card = [modelParams.numHiddenStates];
+		%factors(i).val = zeros(1, modelParams.numHiddenStates);
+		%v = sum(index, i+numCharacters-1);
+		%factors(i) = SetValueOfAssignment(factors(i), featureSet.features(i).assignment, v);
+		%index = index + numCharacters	;
+    %end
     
 
 end
