@@ -106,7 +106,7 @@ function [P, logZ] = CliqueTreeCalibrate(P, isMax)
         %%% YOUR CODE HERE:
         %logZ = 0; % remove this
         for i = 1:N		
-			if length(P.cliqueList(i).var) != 0
+			if length(P.cliqueList(i).var) ~= 0
 				%f = P.cliqueList(i);
 				%for j = 1:N
 					%f = FactorProduct(f, unnormalizedMessages(j, i));

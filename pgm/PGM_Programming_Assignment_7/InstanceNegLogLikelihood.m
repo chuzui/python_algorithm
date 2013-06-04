@@ -59,47 +59,109 @@ function [nll, grad] = InstanceNegLogLikelihood(X, y, theta, modelParams)
     grad = zeros(size(theta));
     %%%
     % Your code here:
+    temp = zeros(size(theta));
+    featuresCount = zeros(size(theta));
     [numCharacters numImageFeatures] = size(X);
-    N = size(theta);
-    factors = repmat(struct ('var', [], 'card', [], 'val', []), N);
-
+    chars = modelParams.numHiddenStates;
+    single = repmat(struct ('var', [], 'card', [chars], 'val', zeros(1 , chars)), numCharacters, 1);
+    double = repmat(struct ('var', [], 'card', [chars chars], 'val', zeros(1, chars * chars)), numCharacters - 1, 1);
+    for i=1:numCharacters
+        single(i).var = i;
+    end
+    
+    for i=1:(numCharacters-1)
+        double(i).var = [i i+1];
+    end
+    
     for i = 1:length(featureSet.features)
 		index = featureSet.features(i).paramIdx;
-		if length(factors(index).var) != 0
-			v = GetValueOfAssignment(factors(index), featureSet.features(i).assignment) + theta(index);
-			factors(index) = SetValueOfAssignment(factors(index), featureSet.features(i).assignment, v);
-		else
-			factors(index).var = featureSet.features(i).var;
-			if length(factors(index).var) == 1
-				factors(index).card = [numCharacters];	
-			elseif length(factors(index).var) == 2
-				if any(featureSet.features(i).assignment > 26)
-					"> 26"
-				end
-				factors(index).card = [numCharacters numCharacters];
-			else		
-				factors(index).card = [numImageFeatures numCharacters 2];
-			end	
-			factors(index).val = zeros(1, prod(factors(index).card));
-			factors(index) = SetValueOfAssignment(factors(index), featureSet.features(i).assignment, theta(index));
-
-		end
+        f = featureSet.features(i);
+        if length(f.var) == 1
+            v = GetValueOfAssignment(single(f.var), f.assignment);
+            single(f.var) = SetValueOfAssignment(single(f.var), f.assignment, theta(index) + v);
+            if y(f.var) == f.assignment
+                featuresCount(index) = 1;
+            end
+            
+        else
+            v = GetValueOfAssignment(double(f.var(1)), f.assignment);
+            double(f.var(1)) = SetValueOfAssignment(double(f.var(1)), f.assignment, theta(index) + v);
+            
+            if all(y(f.var) == f.assignment)
+                featuresCount(index) = 1;
+            end
+           
+        end
     end
+%     for i = 1:length(featureSet.features)
+% 		index = featureSet.features(i).paramIdx;
+% 		if length(factors(index).var) ~= 0
+% 			v = GetValueOfAssignment(factors(index), featureSet.features(i).assignment) + theta(index);
+% 			factors(index) = SetValueOfAssignment(factors(index), featureSet.features(i).assignment, v);
+% 		else
+% 			factors(index).var = featureSet.features(i).var;
+% 			if length(factors(index).var) == 1
+% 				factors(index).card = [numCharacters];	
+% 			elseif length(factors(index).var) == 2
+% 				if any(featureSet.features(i).assignment > 26)
+% 					display "> 26"
+% 				end
+% 				factors(index).card = [numCharacters numCharacters];
+% 			else		
+% 				factors(index).card = [numImageFeatures numCharacters 2];
+% 			end	
+% 			factors(index).val = zeros(1, prod(factors(index).card));
+% 			factors(index) = SetValueOfAssignment(factors(index), featureSet.features(i).assignment, theta(index));
+% 
+% 		end
+%     end
+    %for i = 1:length(factors)
+		%factors(i).val = exp(factors(i).val);
+    %end
+    factors = [single(:); double(:)];
     for i = 1:length(factors)
-		factors(i).val = exp(factors(i).val);
+        factors(i).val = exp(factors(i).val);
     end
-
     P = CreateCliqueTree(factors);
     [a logZ] = CliqueTreeCalibrate(P, false);
-    logZ
-    nll = logZ;
     
-    weighted = 0;
-    for i = 1:length(featureSet.features)
-		weighted = weighted + theta(featureSet.features(i).paramIdx);
-    end
-    weighted
+    weighted = sum(theta .* featuresCount);
     reg = (modelParams.lambda / 2) * sum(theta .^ 2)
+    
+    nll = logZ - weighted + reg;
+    
+    a.cliqueList(1).val = a.cliqueList(1).val / sum(a.cliqueList(1).val);
+    a.cliqueList(2).val = a.cliqueList(2).val / sum(a.cliqueList(2).val);
+    single(1) =  FactorMarginalization(a.cliqueList(1), [2]);
+    single(2) =  FactorMarginalization(a.cliqueList(1), [1]);
+    single(3) =  FactorMarginalization(a.cliqueList(2), [2]);
+    
+    double(1) = a.cliqueList(1);
+    double(2) = a.cliqueList(2);
+    
+    for i=1:numCharacters
+        single(i).val = single(i).val / sum(single(i).val);
+        %single(i).val = log(single(i).val );
+    end
+    
+    for i=1:(numCharacters-1)
+        double(i).val = double(i).val / sum(double(i).val);
+        %double(i).val = log(double(i).val);
+    end
+    
+    for i = 1:length(featureSet.features)
+		index = featureSet.features(i).paramIdx;
+        f = featureSet.features(i);
+        if length(f.var) == 1
+            v = GetValueOfAssignment(single(f.var), f.assignment);
+            temp(index) = temp(index) +  v;
+        else
+            v = GetValueOfAssignment(double(f.var(1)), f.assignment);
+            temp(index) = temp(index) + v;
+        end
+    end
+    
+    grad = temp - featuresCount + modelParams.lambda * theta;
     
     %index = 1;
     %for i = 1:modelParams.numHiddenStates
