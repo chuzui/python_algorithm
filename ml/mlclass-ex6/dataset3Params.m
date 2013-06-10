@@ -21,24 +21,27 @@ sigma = 0.3;
 %
 %  Note: You can compute the prediction error using 
 %        mean(double(predictions ~= yval))
-%
-L = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
-error = inf;
-for tempC = L
-    for temp_sigma = L
-        model = svmTrain(X, y, tempC, @(x1, x2) gaussianKernel(x1, x2, temp_sigma), 1e-3, 20);
-        predictions = svmPredict(model, Xval);
-        if mean(double(predictions ~= yval)) < error
-            error = mean(double(predictions ~= yval));
-            C = tempC;
-            sigma = temp_sigma;
-        end
-    end
-end
+
+%L = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+%error = inf;
+%for tempC = L
+    %for temp_sigma = L
+        %model = svmTrain(X, y, tempC, @(x1, x2) gaussianKernel(x1, x2, temp_sigma), 1e-3, 20);
+        %predictions = svmPredict(model, Xval);
+        %if mean(double(predictions ~= yval)) < error
+            %error = mean(double(predictions ~= yval));
+            %C = tempC;
+            %sigma = temp_sigma;
+        %end
+    %end
+%end
+
+sigma = 0.02;
 
 
-
-
+model = svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma), 1e-3, 20);
+predictions = svmPredict(model, Xval);
+mean(double(predictions ~= yval))
 
 
 
