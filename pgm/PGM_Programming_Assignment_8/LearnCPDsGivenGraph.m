@@ -28,4 +28,41 @@ P.c = zeros(1,K);
 % YOUR CODE HERE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('log likelihood: %f\n', loglikelihood);
+for i=1:K
+    P.c(i) = sum(labels(:, i)) / N;
+end
+
+P.clg = repmat(struct('mu_y', [], 'sigma_y', [], 'mu_x', [], 'sigma_x', [], 'mu_angle', [], 'sigma_angle', [], 'theta', []), 1, 10);
+for i = 1:10
+    if G(i, 1) == 0
+        for k=1:K       
+            [P.clg(i).mu_y(k) P.clg(i).sigma_y(k)] = FitGaussianParameters(reshape(dataset(find(labels(:, k)), i, 1), sum(labels(:, k)), 1)); 
+            [P.clg(i).mu_x(k) P.clg(i).sigma_x(k)] = FitGaussianParameters(reshape(dataset(find(labels(:, k)), i, 2), sum(labels(:, k)), 1)); 
+            [P.clg(i).mu_angle(k) P.clg(i).sigma_angle(k)] = FitGaussianParameters(reshape(dataset(find(labels(:, k)), i, 3), sum(labels(:, k)), 1)); 
+        end
+    else
+        for k=1:K
+            pa = G(i, 2);
+            num = sum(labels(:, k));
+            U = reshape(dataset(find(labels(:, k)), pa, :), sum(labels(:, k)), 3);
+            %Ux = reshape(dataset(find(labels(:, k)), pa, 2), sum(labels(:, k)), 1);
+            %Uangle = reshape(dataset(find(labels(:, k)), pa, 3), sum(labels(:, k)), 1);
+            
+            y = dataset(find(labels(:, k)), i, 1);
+            [Beta P.clg(i).sigma_y(k)] = FitLinearGaussianParameters(y, U);
+            P.clg(i).theta(k, 1:4) = [Beta(4), Beta(1:3)']; 
+            
+            x = dataset(find(labels(:, k)), i, 2);
+            [Beta P.clg(i).sigma_x(k)] = FitLinearGaussianParameters(x, U);
+            P.clg(i).theta(k, 5:8) = [Beta(4), Beta(1:3)']; 
+            
+            angle = dataset(find(labels(:, k)), i, 3);
+            [Beta P.clg(i).sigma_angle(k)] = FitLinearGaussianParameters(angle, U);
+            P.clg(i).theta(k, 9:12) = [Beta(4), Beta(1:3)']; 
+            %[P.clg(i).mu_y(k) P.clg(i).sigma_y(k)] = FitGaussianParameters(reshape(dataset(find(labels(:, k)), i, 1), sum(labels(:, k)), 1)); 
+        end
+    end
+end
+
+loglikelihood = ComputeLogLikelihood(P, G, dataset);
 
