@@ -352,7 +352,7 @@ class CornersProblem(search.SearchProblem):
                 for i, corner in enumerate(self.corners):
                     if newStata.position == corner:
                         newStata.cornersVisted[i] = True
-                successors.append((newStata, action, self.getCostOfActions([action])))
+                successors.append((newStata, action, 1))
             "*** YOUR CODE HERE ***"
 
         self._expanded += 1
@@ -436,24 +436,24 @@ def cornersHeuristic(state, problem):
     #         V += 1
     g = Graph(V)
 
-    minLength = 0
-    for i, corner in enumerate(state.cornersVisted):
-        #if state.position == corners[i]:
-            #print "asasd"
-            #return 0
-        if corner == False:
-            if minLength == 0 or man(corners[i], state.position) > minLength:
-                minLength =  man(corners[i], state.position)
-    return minLength
+    # minLength = 0
     # for i, corner in enumerate(state.cornersVisted):
+    #     #if state.position == corners[i]:
+    #         #print "asasd"
+    #         #return 0
     #     if corner == False:
-    #         g.addEdge(i, 4, man(corners[i], state.position))
-    #         for j, jcorner in enumerate(state.cornersVisted):
-    #             if j != i and jcorner == False:
-    #                 g.addEdge(i, j, man(corners[i], corners[j]))
-    #
-    #
-    # h = g.distance()
+    #         if minLength == 0 or man(corners[i], state.position) > minLength:
+    #             minLength =  man(corners[i], state.position)
+    # return minLength
+    for i, corner in enumerate(state.cornersVisted):
+        if corner == False:
+            g.addEdge(i, 4, man(corners[i], state.position))
+            for j, jcorner in enumerate(state.cornersVisted):
+                if j != i and jcorner == False:
+                    g.addEdge(i, j, man(corners[i], corners[j]))
+
+
+    h = g.distance()
     #print "1 " + str(h)
     return h
    # return 0 # Default to trivial solution

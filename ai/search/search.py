@@ -203,14 +203,17 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     count = 0
     while not fringe.isEmpty():
         node = fringe.pop()
+        if goalNode != None and node.costAndHeuristic > goalNode._cost:
+            break;
         if problem.isGoalState(node._state):
             goalNode = node
             break
         if not closed.has_key(node._state):
             for (successor, action, stepCost) in problem.getSuccessors(node._state):
-                costAndHeuristic = node._cost + stepCost + heuristic(successor, problem)
-                successorNode = Node(successor, action, node, node._cost + stepCost, costAndHeuristic)
-                fringe.push(successorNode,costAndHeuristic)
+                if not successor in closed:
+                    costAndHeuristic = node._cost + stepCost + heuristic(successor, problem)
+                    successorNode = Node(successor, action, node, node._cost + stepCost, costAndHeuristic)
+                    fringe.push(successorNode,costAndHeuristic)
                 # if fringeDict.has_key(successor):
                 #     if costAndHeuristic < fringeDict[successor]._costAndHeuristic:
                 #         # fringeDict[successor]._costAndHeuristic = costAndHeuristic
