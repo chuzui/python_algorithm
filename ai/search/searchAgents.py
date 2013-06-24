@@ -381,6 +381,9 @@ class Graph:
         self.matrix[u][w] = weight
         self.matrix[w][u] = weight
 
+    def mindistance(self):
+        pass
+
     def distance(self):
         marked = [False for i in range(self.V)]
         marked[self.V-1] = True
@@ -549,7 +552,24 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    l = foodGrid.asList()
+    minD = -1
+    for i in range(len(l)):
+        dis = man(position, l[i])
+        if minD == -1 or dis < minD:
+            minD = dis
+
+    return max(minD, 0)
+    # l = foodGrid.asList()
+    # V = len(l) + 1
+    # g = GV)
+    #
+    # for i in range(len(l)):
+		# g.addEdge(i, V-1, man(l[i], position))
+		# for j in range(i+1, len(l)):
+		# 	g.addEdge(i, j, man(l[i]
+    # print g.distance(), l[j]))
+    # return g.distance()
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -575,9 +595,8 @@ class ClosestDotSearchAgent(SearchAgent):
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
+        return search.aStarSearch(problem)
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -611,6 +630,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         that will complete the problem definition.
         """
         x,y = state
+        if self.food[x][y]:
+            return True
+        return False
 
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
@@ -632,7 +654,9 @@ class ApproximateSearchAgent(Agent):
         The Agent will receive a GameState and must return an action from
         Directions.{North, South, East, West, Stop}
         """
-        "*** YOUR CODE HERE ***"
+        food = state.getFood()
+        actions = search.aStarSearch()
+
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
