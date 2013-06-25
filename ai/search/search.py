@@ -131,7 +131,7 @@ def breadthFirstSearch(problem):
             closed.add(node._state)
             #while len(actions) > 0 and node[2] != actions[len(actions) - 1][0]:
             #actions.pop(len(actions) - 1)
-            #actions.append((node[0], node[1]))
+          #actions.append((node[0], node[1]))
 
             if problem.isGoalState(node._state):
                 break
@@ -143,7 +143,7 @@ def breadthFirstSearch(problem):
         actions.insert(0,node._action)
         node = node._parentNode
     return actions
-    util.raiseNotDefined()
+
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
@@ -203,30 +203,20 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     count = 0
     while not fringe.isEmpty():
         node = fringe.pop()
-        if goalNode != None and node.costAndHeuristic > goalNode._cost:
-            break;
-        if problem.isGoalState(node._state):
-            goalNode = node
+        if goalNode != None and node._costAndHeuristic >= goalNode._cost:
             break
+        if problem.isGoalState(node._state):
+            if goalNode != None and node._cost >= goalNode._cost:
+                continue
+            goalNode = node
+            continue
         if not closed.has_key(node._state):
             for (successor, action, stepCost) in problem.getSuccessors(node._state):
                 if not successor in closed:
                     costAndHeuristic = node._cost + stepCost + heuristic(successor, problem)
                     successorNode = Node(successor, action, node, node._cost + stepCost, costAndHeuristic)
                     fringe.push(successorNode,costAndHeuristic)
-                # if fringeDict.has_key(successor):
-                #     if costAndHeuristic < fringeDict[successor]._costAndHeuristic:
-                #         # fringeDict[successor]._costAndHeuristic = costAndHeuristic
-                #         # fringeDict[successor]._parentNode = node
-                #         # fringeDict[successor]._action = action
-                #         # fringeDict[successor]._cost = node._cost + stepCost
-                #         successorNode = Node(successor, action, node, node._cost + stepCost, costAndHeuristic)
-                #         fringe.push(successorNode,costAndHeuristic)
-                #         fringeDict[successor] = successorNode
-                # else:
-                #     successorNode = Node(successor, action, node, node._cost + stepCost, costAndHeuristic)
-                #     fringe.push(successorNode,costAndHeuristic)
-                #     fringeDict[successor] = successorNode
+
             closed[node._state] = node
         else:
             #print 'aaaaaaaaaaaa'
