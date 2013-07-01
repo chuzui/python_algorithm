@@ -110,7 +110,7 @@ public class Solver {
                 }
             }
         }
-	minColorsNum -= 1;
+
         System.out.println(minColorsNum+" 1");
         for(int i=0; i < nodeCount; i++){
             System.out.print(minNodesColor[i]+" ");
